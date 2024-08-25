@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    {% block head %}
+    <title>My account</title>
+
+    <style media="screen">
+
+      h2{
+        margin-top: 15vh;
+        font-family: 'Oswald', sans-serif;
+        font-weight: 600;
+        font-size: 4rem;
+        text-align: left;
+      }
+      h3{
+        font-family: 'Oswald', sans-serif;
+        font-weight: 400;
+        font-size: 3rem;
+        text-align: left;
+        margin-left: 20px;
+      }
+      .divider{
+        background-color: green;
+        width: auto;
+      }
+      .acc-heading{
+        width: fit-content;
+      }
+      .middle{
+        display:flex;
+        justify-content: center;
+      }
+      .main{
+        width: 80vw;
+        min-height: 100vh;
+        margin: auto;
+      }
+      .purchased{
+        margin-top: 5vh;
+      }
+      .section-head{
+        margin-top: 5vh;
+      }
+      .deets{
+        margin-left: 40px;
+        font-size: 20px;
+      }
+      .deets span{
+        font-family: 'Oswald', sans-serif;
+        font-weight: 400;
+        letter-spacing: 1px;
+      }
+      .left{
+        margin-left: 20px !important;
+        margin-top: 1vh !important;
+      }
+      .a{
+        color: green !important;
+      }
+      .none{
+        margin: 1vh 0 1vh 0;
+      }
+      .btn{
+        width: 80px;
+        height: 45px;
+        border-radius: 7px;
+        transition: .3s;
+      }
+    </style>
+    {% endblock %}
+  <body>
+
+    {% block content %}
+
+    <main>
+      <div class="main">
+
+      <div class="face">
+          <div class="middle">
+            <div class="acc-heading">
+              <h2>Your Account</h2>
+              <div class="divider"></div>
+            </div>
+          </div>
+      </div>
+
+      <div class="section-head">
+        <div class="">
+          <h3>Account details</h3>
+        </div>
+
+        <div class="deets">
+          <p><span>First Name:</span> {{request.user.first_name}}</p>
+          <p><span>Second Name:</span> {{request.user.last_name}}</p>
+          <p><span>Username:</span> {{request.user.username}}</p>
+          <p><span>Email:</span> {{request.user.email}}</p>
+          {% if request.user.is_superuser %}
+          <p><span>Admin:</span> True</p>
+          {% endif %}
+          <p><span>Password:</span> <a href="/account/change-password" class="hover-underline-animation a">Change Password</a></p>
+        </div>
+
+        <div class="">
+          <a href="/account/edit"><button type="button" name="button" class="btn left hov">Edit</button></a>
+        </div>
+      </div>
+
+      {% if request.user.is_superuser %}
+      <div class="section-head">
+        <div class="">
+          <h3>Admin Portal</h3>
+        </div>
+
+        <div class="">
+          <a href="/admin/" target="_blank"><button type="button" name="button" class="btn left hov">Visit</button></a>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="purchased section-head">
+        <div class="">
+          <h3>Your Blogs</h3>
+          <!-- <div class="divider"></div> -->
+        </div>
+        {% if none %}
+        <div class="left">
+          <p>No blogs written yet.</p>
+          <button type="button" name="button" class="btn none hov" onClick="location.href='/blogs/create'">Write now</button>
+        </div>
+
+        {% else %}
+
+        <div class="inner"  style="width: auto;margin:auto,">
+          <div class="blogs">
+
+            {% for blog in blogs %}
+            
+            <div class="card" >
+              <a href="blogs/showcase/{{blog.id}}">
+                {% if blog.img %}
+                <img src="{{blog.img.url}}" alt="Avatar" style="width:100%">
+                {% else %}
+                <img src="{% static '/images/default.jpg' %}" alt="Avatar" style="width:100%">
+
+                {% endif %}
+
+                <div class="container">
+
+                  <h4><b>{{blog.title|truncatechars:37}}</b></h4>
+                  <p style="padding-top: 10px;text-align: left;">{{blog.content|truncatechars:165}}</p>
+
+                  <!-- <button type="button" name="button" class="btn hov" onClick="location.href='/account/remove/{{blog.id}}'" style="background-color: red;">Remove</button> -->
+                </div>
+              </a>
+
+                <div class="top-btn">
+                  <button class="btn hov" onClick="location.href='blogs/edit/{{blog.id}}'"><i class=" fa-solid fa-pen-to-square"></i></button>
+                  <button class="btn hov" style="background-color:#910101;" onClick="location.href='/account/remove/{{blog.id}}'"><i class=" fa-solid fa-trash-can"></i></button>
+                </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+      </div>
+
+    </div>
+    </main>
+
+    {% endblock %}
+
+  </body>
+</html>

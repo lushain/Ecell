@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+    {% block head %}
+    <title>Blogs</title>
+
+    <style media="screen">
+      .front{
+        position: relative;
+        justify-content: flex-start;
+        height: 90vh;
+      }
+      .slogan h2{
+        font-family: 'Oswald', sans-serif !important;
+        font-weight: 500;
+        font-size: 5rem;
+        letter-spacing: 6px;
+        gap: 25px;
+        transform: translateY(-10vh);
+        text-align: start;
+        align-items: baseline;
+        justify-content: flex-start;
+        padding-left: 5vw;
+      }
+      .btn{
+        padding: 10px 15px;
+        color: white !important;
+        text-align: center;
+      }
+      .section{
+        margin: 0;
+      }
+
+      .front i{
+        position: absolute;
+        bottom: 0;
+      }
+      .container{
+        position: relative;
+      }
+      .container span{
+        position:absolute; 
+        bottom:0;
+        right:15px;
+        font-weight: 500; 
+        color: #717171;
+      }
+
+    </style>
+    {% endblock %}
+
+  {% block content %}
+    <main>
+      <div class="front" style=" background-image: url('{% static 'images/blogback.jpg' %}');">
+        <div class="slogan">
+          <h2 ><span>Where dreamers</span> <span>come Together</span></h2>
+        </div>
+      </div>
+
+      <div class="section">
+
+        <div class="inner"  style="width: 80vw">
+          <div class="blogs">
+
+            {% for blog in blogs %}
+            <a href="/blogs/showcase/{{blog.id}}">
+            <div class="card" style="cursor: pointer;">
+                {% if blog.img %}
+                <img src="{{blog.img.url}}" alt="Avatar" style="width:100%">
+                {% else %}
+                <img src="{% static '/images/default.jpg' %}" alt="Avatar" style="width:100%">
+
+                {% endif %}
+
+                <div class="container">
+                  <h4><b>{{blog.title|truncatechars:37}}</b></h4>
+                  <p style="padding-top: 10px;text-align: left;">{{blog.content|truncatechars:165}}</p>
+                  <span>~{{blog.author}}</span>
+                  <!-- <button type="button" name="button" class="btn hov" onClick="location.href='/account/remove/{{blog.id}}'" style="background-color: red;">Remove</button> -->
+                </div>
+            </div>
+            </a>
+            {% endfor %}
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    {% endblock %}
+
+</html>

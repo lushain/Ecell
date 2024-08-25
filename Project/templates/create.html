@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    {% block head %}
+    <title>Cooking...</title>
+
+    <style media="screen">
+        h2{
+            margin-top: 15vh;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            font-size: 4rem;
+            text-align: left;
+          }
+          h3{
+            font-family: 'Oswald', sans-serif;
+            font-weight: 400;
+            font-size: 3rem;
+            text-align: left;
+            margin-left: 20px;
+          }
+          .divider{
+            background-color: green;
+            width: auto;
+          }
+          .acc-heading{
+            width: fit-content;
+          }
+          .middle{
+            display:flex;
+            justify-content: center;
+          }
+          .main{
+            width: 80vw;
+            min-height: 100vh;
+            margin: auto;
+          }
+          .section-head{
+            margin-top: 5vh;
+          }
+          .left{
+            margin-left: 20px !important;
+            margin-top: 1vh !important;
+          }
+          .a{
+            color: green !important;
+          }
+          .all-content{
+            margin: auto;
+            display: flex;
+            width: 70%;
+            flex-direction: column;
+          }
+
+          .input-container {
+            position: relative;
+            margin: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 80px;
+            width: 100%;
+          }
+          .input-field {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 25px;
+            border: none;
+            border-bottom: 5px solid #ccc;
+            outline: none;
+            background-color: transparent;
+          }
+          .input-label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 20px;
+            color: rgba(204, 204, 204, 0);
+            pointer-events: none;
+            transition: all 0.3s ease;
+          }
+          .input-highlight {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 5px;
+            width: 0;
+            background-color: green;
+            transition: all 0.3s ease;
+          }
+          .input-field:focus + .input-label {
+            top: -20px;
+            font-size: 16px;
+            color: green;
+          }
+          
+          .input-field:focus + .input-label + .input-highlight {
+            width: 100%;
+          }
+
+          .form-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin: auto;
+          }
+          
+          .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #717171;
+            font-weight: 500;
+            font-size: 16px;
+          }
+          
+          .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: black;
+            font-family: inherit;
+            background-color: transparent;
+            border: 2px solid #ccc;
+          }
+          
+          .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            resize: none;
+            color: black;
+            height: 40vh;
+            border: 2px solid #ccc;
+            background-color: transparent;
+            font-size: 16px;
+            font-family: inherit;
+          }
+          
+          .form-group input::placeholder {
+            opacity: 0.5;
+          }
+          
+          .form-group input:focus {
+            outline: none;
+            border-color: green;
+          }
+          
+          .form-group textarea:focus {
+            outline: none;
+            border-color: green;
+          }
+
+          @media screen and (max-width: 700px){
+            .main{
+              width: 100%;
+            }
+            .all-content{
+              width: 100% !important;
+            }
+          }
+
+    </style>
+    {% endblock head %}
+
+    {% block content %}
+
+    <main>
+        <div class="main">
+            <div class="face">
+                <div class="middle">
+                  <div class="acc-heading">
+                    <h2>Blog Creator</h2>
+                    <div class="divider"></div>
+                  </div>
+                </div>
+            </div>
+
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="all-content">
+                    <div class="input-container">
+                        <input placeholder="Title" maxlength ="500" class="input-field" type="text" name="title" required>
+                        <label for="input-field" class="input-label">Title</label>
+                        <span class="input-highlight"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="textarea">What's on your mind?</label>
+                        <textarea style="white-space: pre-wrap;" maxlength ="2000" required="" cols="50" rows="10" id="textarea" name="textarea" name="content" required></textarea>
+                    </div>
+                    <div class="form-group" style="flex-direction:row; margin-top: 10px;">
+                      <div>
+                        <label for="textarea">Select an Image: (Optional)</label>
+                        <input type="file" onchange="previewFile()" name="image">
+                      </div>
+                      <img src="">
+                    </div>
+
+                    <div class="submit" style="margin: auto;">
+                      <input style="margin: 15px;" action="createBlog" type="submit" name="submit" class= "btn hov">
+                    </div>  
+                </div>
+            </form>
+        </div>
+
+    </main>
+    
+    {% endblock %}
+
+    {% block script %}
+    <script>
+
+      function previewFile() {
+        var preview = document.querySelector('img');
+        var file    = document.querySelector('input[type=file]').files[0];
+        var reader  = new FileReader();
+      
+        reader.onloadend = function () {
+          preview.src = reader.result;
+          preview.style.height = "100px";
+          preview.style.width = "fit-content";
+        }
+      
+        if (file) {
+          reader.readAsDataURL(file);
+        } else {
+          preview.src = "";
+        }
+      }
+          
+    </script>
+  {% endblock %}
+
+</html>

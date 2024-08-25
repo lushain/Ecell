@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    {% block head %}
+    <title>{{blog.title}} </title>
+    <style>
+        h2{
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            font-size: 3.5rem;
+            text-align: left;
+          }
+        main{
+            width: 70vw;
+            margin: auto;
+        }
+        .top{
+            margin-top: 12vh;
+        }
+        .title{
+            width: fit-content;
+        }
+        .top img{
+            display: block;
+            height: 80vh;
+            margin: auto;
+            border-radius: 10px;
+        }
+        .base{
+            position: relative;
+            box-shadow: 0px -38px 35px 45px white;
+            z-index: 2; 
+        }
+        .divider{
+            background-color: green;
+            width: auto;
+            margin: 10px 0px 2px 0px;
+        }
+        .content{
+            margin: 30px 0px 40px 0px;
+        }
+        .top-btn{
+            opacity: 1;
+            top: -60px;
+        }
+        .top-btn button{
+            width: 80px;
+            height: 45px;
+            border-radius: 7px;
+        }
+        @media screen and (max-width: 850px){
+            main{
+                width: 100%;
+            }
+            main img{
+                width: 100%;
+            } 
+            .content{
+                margin: 0 10px 40px 10px;
+                font-size: 20px;
+            }
+            .base{
+                margin: 0 10px 0 15px;
+                position: relative;
+            }
+        }
+        
+    </style>
+
+    {% endblock %}
+
+    {% block content %}
+
+    <main>
+        <div class="top">
+
+            {% if blog.img %}
+            <img src="{{blog.img.url}}" alt="Avatar" style="width:100%">
+            {% else %}
+            <img src="{% static '/images/default.jpg' %}" alt="default">
+            {% endif %}
+
+        </div>
+
+        <div class="base">
+            <div class="title">
+                <h2>{{blog.title}} </h2>
+                <div class="divider"></div>
+                <div style="font-weight: 900;" >~{{blog.author.username}}</div>
+            </div>
+            <div class="content">
+                <p>{{blog.content|linebreaksbr}} </p>
+
+                {% if blog.author.username == user.username %}
+                <div class="top-btn">
+                    <button class="btn hov" onClick="location.href='/blogs/edit/{{blog.id}}'"><i class=" fa-solid fa-pen-to-square"></i></button>
+                    <button class="btn hov" style="background-color:#910101;" onClick="location.href='/account/remove/{{blog.id}}'"><i class=" fa-solid fa-trash-can"></i></button>
+                </div>
+                {% endif %}
+            </div>
+            
+
+        </div>
+        
+
+    </main>
+
+    {% endblock %}
+
+
+    {% block script %}
+
+    {% endblock %}
+
+</html>
